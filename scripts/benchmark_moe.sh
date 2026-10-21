@@ -14,7 +14,7 @@ if [[ ! -x "$python_bin" ]]; then
     exit 1
 fi
 if ! "$python_bin" -c 'import torch, deep_ep, deep_gemm'; then
-    echo "Install official DeepEP and DeepGEMM into $python_bin before this H100 run." >&2
+    echo "Install official DeepEP V2 and DeepGEMM into $python_bin before benchmarking." >&2
     exit 1
 fi
 # DeepEP's supported single-node NVLink-only mode needs no RDMA/GIN device.
@@ -23,7 +23,7 @@ export NCCL_NVLS_ENABLE="${NCCL_NVLS_ENABLE:-0}"
 # DeepGEMM's wheel includes the CUTLASS/CuTe headers used by its JIT kernels.
 export CUTLASS_DIR="${CUTLASS_DIR:-$("$python_bin" -c 'import pathlib, deep_gemm; print(pathlib.Path(deep_gemm.__file__).parent)')}"
 mkdir -p "$repo_root/build"
-if ! GPU_KERNELS_CUDA_ARCH=90 bash "$repo_root/scripts/build.sh" gpu_kernels_moe_swiglu_bench gpu_kernels_fused_moe_bench \
+if ! GPU_KERNELS_CUDA_ARCH=90a bash "$repo_root/scripts/build.sh" gpu_kernels_moe_swiglu_bench gpu_kernels_fused_moe_bench \
         >"$repo_root/build/moe_build.log" 2>&1; then
     cat "$repo_root/build/moe_build.log" >&2
     exit 1

@@ -12,6 +12,5 @@ __pycache__/
 /tmp
 *.md
 !/README.md
-# Local blog drafts, browser previews, and their PNG/SVG figure assets.
-/kernels/attention/flash_attention/blog_*
+# Local blog draft.
 /kernels/moe/fused/blog_zh.md
